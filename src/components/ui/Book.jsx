@@ -29,7 +29,7 @@ const Book = ( {book} ) => {
                 {book.salePrice ? (
                     <>
                         <span className="book__price--normal">${book.originalPrice}</span>
-                        {book.salePrice}
+                        ${book.salePrice}
                     </>
                 ) : (
                     ${book.originalPrice}
