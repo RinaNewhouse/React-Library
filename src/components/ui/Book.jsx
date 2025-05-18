@@ -19,20 +19,35 @@ const Book = ( {book} ) => {
                 </a>
               </div>
               <div className="book__ratings">
-                <FontAwesomeIcon icon="star" />
-                <FontAwesomeIcon icon="star" />
-                <FontAwesomeIcon icon="star" />
-                <FontAwesomeIcon icon="star" />
-                <FontAwesomeIcon icon="star-half-alt" />
+                {
+                    // Math. allows decimals to be included in arrays. Floor means that decimals ≤0.5 will be rounded down. (Math.Ceiling means that decimals ≥0.5 will be rounded up.)
+                    // When you are mapping something, then you need a key, usually saying index or ___.id.
+                    new Array(Math.floor(book.rating)).fill(0).map((_, index) => <FontAwesomeIcon icon="star" key={index} />)
+                }
+                {/* Ternary Operator */}
+                {
+                    Number.isInteger(book.rating) 
+                    ? '' 
+                    : <FontAwesomeIcon icon="star-half-alt" />
+                }
+                {/* Another Valid Way. But only do this when the ? would print out absolutely nothing otherwise. Haha. */}
+                {/* {
+                    !Number.isInteger(book.rating) && <FontAwesomeIcon icon="star-half-alt" />
+                } */}
               </div>
               <div className="book__price">
                 {book.salePrice ? (
+                    // If there is a sale, show the crossed-out original price and the sale price.
                     <>
-                        <span className="book__price--normal">${book.originalPrice}</span>
-                        ${book.salePrice}
+                        <span className="book__price--normal">${book.originalPrice.toFixed(2)}</span>
+                        ${book.salePrice.toFixed(2)}
                     </>
+                    // But if there is not a sale...
                 ) : (
-                    ${book.originalPrice}
+                    // Then just show the regular price only, nada más.
+                    <>
+                        ${book.originalPrice.toFixed(2)}
+                    </>
                 )}
               </div>
             </div>
