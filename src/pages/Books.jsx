@@ -1,5 +1,5 @@
 import React from "react";
-import Book from "./components/ui/Book";
+import Book from "../components/ui/Book";
 
 const Books = ({ books }) => {
   return (
