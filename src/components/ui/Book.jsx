@@ -6,7 +6,7 @@ import Price from './Price'
 const Book = ( {book} ) => {
     return (
         <div className="book">
-              <Link to="/books/1">
+              <Link to={`/books/${book.id}`}>
                 <figure className="book__img--wrapper">
                   <img
                     src={book.url}
@@ -16,7 +16,7 @@ const Book = ( {book} ) => {
                 </figure>
               </Link>
               <div className="book__title">
-                <Link to="/books/1" className="book__title--link">
+                <Link to={`/books/${book.id}`} className="book__title--link">
                   {book.title}
                 </Link>
               </div>
