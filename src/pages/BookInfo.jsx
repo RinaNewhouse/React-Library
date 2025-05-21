@@ -38,11 +38,15 @@ const BookInfo = ({ books }) => {
                     <Price originalPrice={book.originalPrice} salePrice={book.salePrice} />
                 </div>
                 <div className="book__summary">
-                    <div className="book__summary--title">
+                    <h3 className="book__summary--title">
                         <b>Summary</b>
-                    </div>
-                    <p className="book__summary__para">
-                       {book.summary}
+                    </h3>
+                    <p classname="book__summary__para">
+                        {book.summary
+                            .split(new RegExp(`(${book.title})`, "g"))
+                            .map((part, index) =>
+                            part === book.title ? <em key={index}>{part}</em> : part 
+                        )}
                     </p>
                 </div>
                 <button className="btn">
@@ -59,7 +63,9 @@ const BookInfo = ({ books }) => {
                         Recommended Books
                     </h2>
                 </div>
-
+                {
+                    books.filter(book => book.rating === 5 && book.id !==id)
+                }
             </div>
         </div>
       </main>
