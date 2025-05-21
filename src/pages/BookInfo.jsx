@@ -1,11 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Rating from "../components/ui/Rating";
 import Price from '../components/ui/Price'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const BookInfo = ({ books }) => {
-  return (
+  const {id} = useParams();
+  const book = books.find(book => +book.id === +id)
+  console.log(book)
+    return (
     <div id="books__body">
       <main id="books__main">
         <div className="books__container">
@@ -20,29 +23,26 @@ const BookInfo = ({ books }) => {
             </div>
             <div className="book__selected">
               <figure className="book__selected--figure">
-                <img src={books.url} alt="" className="book__selected--img" />
+                <img 
+                    src={book.url} 
+                    alt="" 
+                    className="book__selected--img" 
+                />
               </figure>
               <div className="book__selected--description">
-                <div className="book__selected--title">{books.title}</div>
-                <Rating />
+                <h2 className="book__selected--title">
+                    {book.title}
+                </h2>
+                <Rating rating={book.rating}/>
                 <div className="book__selected--price">
-                    <Price />
+                    <Price originalPrice={book.originalPrice} salePrice={book.salePrice} />
                 </div>
                 <div className="book__summary">
                     <div className="book__summary--title">
-                        Summary
+                        <b>Summary</b>
                     </div>
                     <p className="book__summary__para">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                        Voluptatibus provident distinctio, facere quia laborum 
-                        itaque iure eaque commodi dolores obcaecati, voluptate porro 
-                        fuga dolore unde sapiente quidem laboriosam atque similique!
-                    </p>
-                    <p className="book__summary__para">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                        Voluptatibus provident distinctio, facere quia laborum 
-                        itaque iure eaque commodi dolores obcaecati, voluptate porro 
-                        fuga dolore unde sapiente quidem laboriosam atque similique!
+                       {book.summary}
                     </p>
                 </div>
                 <button className="btn">
@@ -59,6 +59,7 @@ const BookInfo = ({ books }) => {
                         Recommended Books
                     </h2>
                 </div>
+
             </div>
         </div>
       </main>
