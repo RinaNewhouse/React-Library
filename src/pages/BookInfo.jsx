@@ -3,10 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import Rating from "../components/ui/Rating";
 import Price from "../components/ui/Price";
 import Book from "../components/ui/Book";
-import Cart from "../pages/Cart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookInfo = ({ books, addToCart, addBookToCart }) => {
+const BookInfo = ({ books, cart, addToCart, addBookToCart }) => {
   const { id } = useParams();
   const book = books.find((book) => +book.id === +id);
 
