@@ -10,10 +10,14 @@ import Cart from './pages/Cart'
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
 
   function addToCart(book) {
-    setCart([...cart, {...book, quantity: 1 }])
+    setCart([...cart, { ...book, quantity: 1 }]);
+    localStorage.setItem(
+      "cart",
+      JSON.stringify([...cart, { ...book, quantity: 1 }])
+    );
   }
 
   function changeQuantity(book, quantity) {
