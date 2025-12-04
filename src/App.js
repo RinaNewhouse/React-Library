@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import BookInfo from './pages/BookInfo'
 import Cart from './pages/Cart'
+import CheckoutSuccess from './pages/CheckoutSuccess'
 import React, { useState, useEffect } from 'react';
 
 function App() {
@@ -21,15 +22,15 @@ function App() {
   }
 
   function changeQuantity(book, quantity) {
-    setCart(
-      cart.map((item) => item.id === book.id
-        ? {
-          ...item,
-          quantity: +quantity,
-        }
-        : item
-      )
+    const updatedCart = cart.map((item) => item.id === book.id
+      ? {
+        ...item,
+        quantity: +quantity,
+      }
+      : item
     );
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   }
 
   useEffect (() => {
@@ -37,7 +38,14 @@ function App() {
   }, [cart])
 
   function removeItem(item) {
-    setCart(cart.filter(book => book.id !== item.id))
+    const updatedCart = cart.filter(book => book.id !== item.id);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  }
+
+  function clearCart() {
+    setCart([]);
+    localStorage.removeItem("cart");
   }
 
   function numberOfItems() {
@@ -56,6 +64,7 @@ function App() {
         <Route path="/books" exact render={() => <Books books={books} />} />
         <Route path="/books/:id" render={() => <BookInfo books={books} addToCart={addToCart} cart={cart} />} />
         <Route path="/cart" render={() => <Cart books={books} cart={cart} changeQuantity={changeQuantity} removeItem={removeItem} />} />
+        <Route path="/checkout-success" render={() => <CheckoutSuccess clearCart={clearCart} />} />
         <Footer />
       </div>
     </Router>

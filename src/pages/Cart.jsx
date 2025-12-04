@@ -1,14 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import EmptyCart from "../assets/empty_cart.svg";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Cart = ({ cart, changeQuantity, removeItem }) => {
+  const [loading, setLoading] = useState(false);
+
   const total = () => {
     let price = 0;
     cart.forEach((item) => {
       price += +((item.salePrice || item.originalPrice) * item.quantity);
     });
     return price;
+  };
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) return;
+
+    setLoading(true);
+    try {
+      // Use Vercel serverless function (works in both dev and production)
+      const apiUrl = '/api/create-checkout-session';
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        alert(`Error: ${data.error}`);
+        setLoading(false);
+        return;
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('An error occurred during checkout. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,10 +133,11 @@ const Cart = ({ cart, changeQuantity, removeItem }) => {
                   <span>${total().toFixed(2)}</span>
                 </div>
                 <button
-                  className="btn btn__checkout no-cursor"
-                  onClick={() => alert(`Haven't got around to doing this :()`)}
+                  className="btn btn__checkout"
+                  onClick={handleCheckout}
+                  disabled={loading}
                 >
-                  Proceed to Checkout
+                  {loading ? 'Processing...' : 'Proceed to Checkout'}
                 </button>
               </div>
             )}
